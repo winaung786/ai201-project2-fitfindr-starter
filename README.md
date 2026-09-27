@@ -65,7 +65,7 @@ Each tool was also run independently:
 
 ```text
 > python app.py tool search --description 'vintage graphic tee' --size M --max-price 30
-{"count": 2, "first": {"id": "lst_002", "title": "Y2K Baby Tee — Butterfly Print", "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.", "category": "tops", "style_tags": ["y2k", "vintage", "graphic tee", "cottagecore"], "size": "S/M", "condition": "excellent", "price": 18.0, "colors": ["white", "pink", "purple"], "brand": null, "platform": "depop"}}
+{"count": 1, "first": {"id": "lst_002", "title": "Y2K Baby Tee — Butterfly Print", "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.", "category": "tops", "style_tags": ["y2k", "vintage", "graphic tee", "cottagecore"], "size": "S/M", "condition": "excellent", "price": 18.0, "colors": ["white", "pink", "purple"], "brand": null, "platform": "depop"}}
 > python app.py tool outfit --item-id lst_002
 Pair the Y2K Baby Tee — Butterfly Print with baggy straight-leg jeans in dark wash, finished with chunky white sneakers and a black crossbody bag.
 > python app.py tool card --item-id lst_002 --outfit 'Pair it with baggy jeans and chunky white sneakers.'
@@ -84,6 +84,8 @@ No listings match that request. Try changing a keyword, choosing another size, o
 I asked Codex to implement the three tool contracts from `planning.md` and to check the search against the supplied listings. Its first search for `vintage graphic tee` returned eight matches, including items matched only by `vintage`. I changed the search to require the requested garment type when one is present; the same command then returned two tee listings, with `lst_002` first.
 
 I asked Codex to run the outfit and caption tools with the existing Gemini key. The first model request returned HTTP 404 because the adapter's default model name was unavailable, so I changed it to the model already configured in the earlier AI201 project and reran a complete query. A standalone caption then claimed the wearer had listed the item for sale, so I tightened the prompt and added a check that replaces such text with a local caption. Codex also drafted the three new criteria in `criteria.md`; they are explicit targets to review and defend for the next unit.
+
+After the initial build, I found that a mesh top was returned for a graphic tee query only because its description said it could be layered under a graphic tee. I changed the garment-type check to use the listing title and style tags, and the search now returns only the tee for that query.
 
 ## Interaction Walkthrough
 

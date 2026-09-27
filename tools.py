@@ -44,7 +44,9 @@ def search_listings(
             " ".join(listing["colors"]), listing.get("brand") or "",
         ]))
         item_words = query_words & _ITEM_WORDS
-        if item_words and not item_words & (title_words | tag_words | other_words):
+        # A description may mention another garment (for example, a mesh top
+        # advertised as layering under a graphic tee). It is not that item.
+        if item_words and not item_words & (title_words | tag_words):
             continue
         score = 3 * len(query_words & title_words) + 2 * len(query_words & tag_words) + len(query_words & other_words)
         if score:

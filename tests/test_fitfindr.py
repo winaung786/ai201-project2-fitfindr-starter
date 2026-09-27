@@ -19,6 +19,7 @@ class FitFindrTests(unittest.TestCase):
         matches = search_listings("vintage graphic tee", "M", 30.0)
         self.assertTrue(matches)
         self.assertEqual(matches[0]["id"], "lst_002")
+        self.assertNotIn("lst_017", [item["id"] for item in matches])
         self.assertTrue(all(item["price"] <= 30 and item["size"] in {"M", "S/M", "M/L"} for item in matches))
         self.assertEqual(search_listings("designer ballgown", "XXS", 5.0), [])
 
